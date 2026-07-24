@@ -82,8 +82,8 @@ def clean_up(combined_record_group):
 
         item_list = list(item)
         item_list.remove(item_list[1])
-        item = tuple(item_list)
+        formatted_item = tuple(item_list)
 
-        result += f"{str(item)}\n"
+        result += f"{str(formatted_item)}\n"
 
     return result
