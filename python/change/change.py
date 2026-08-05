@@ -14,23 +14,39 @@ def find_fewest_coins(coins, target):
     if target < 0:
         raise ValueError("target can't be negative")
 
+    memory = {}
 
-    min_coins_count = [float('inf')] * (target + 1)
-    min_coins_list = [[]] * (target + 1)
-    min_coins_count[0] = 0  # Base case: 0 coins are needed to make the amount 0
-    for amount in range(1, target + 1):
-        for coin in coins:
-            if coin <= amount:
-                candidate = min_coins_count[amount - coin] + 1
+    def find(amount):
+        # Impossible path
+        if amount < 0:
+            return float("inf"), []
 
-                if candidate < min_coins_count[amount]:
-                    min_coins_count[amount] = candidate
-                    min_coins_list[amount] = min_coins_list[amount - coin] + [coin]
+        # Base case
+        if amount == 0:
+            return 0, []
 
+        # Already solved
+        if amount in memory:
+            return memory[amount]
 
-    if min_coins_count[target] == float('inf'):
+        best_count = float("inf")
+        best_list = []
+
+        for coin in sorted(coins, reverse=True):
+            count, coin_list = find(amount - coin)
+
+            candidate = count + 1
+
+            if candidate < best_count:
+                best_count = candidate
+                best_list = coin_list + [coin]
+
+        memory[amount] = (best_count, best_list)
+        return memory[amount]
+
+    count, result = find(target)
+
+    if count == float("inf"):
         raise ValueError("can't make target with given coins")
 
-
-    min_coins_list[target].reverse()
-    return min_coins_list[target]
+    return result
