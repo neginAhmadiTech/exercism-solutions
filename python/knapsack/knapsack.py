@@ -1,4 +1,4 @@
-"""Module for solving the knapsack problem using a greedy algorithm approach.
+"""Module for solving the knapsack problem using Dynamic programming approach.
 """
 def maximum_value(maximum_weight, items):
     """Function to calculate the maximum value of items that
@@ -12,26 +12,30 @@ def maximum_value(maximum_weight, items):
         int: The maximum value that can be achieved without exceeding the maximum weight.
     """
 
-    if maximum_weight == 0 or len(items) == 0:
-        return 0
-    
-    sorted_items = sorted(items, key=lambda item: item['value'])
-    sorted_items.reverse()
-        
-    result = 0
-    current_weight = 0
-    while current_weight <= maximum_weight:
-        
-        last_item = {}
-        for item in sorted_items:
-            if current_weight + item['weight'] > maximum_weight:
-                last_item = item
-                break
-            
-            current_weight += item['weight']
-            result += item['value']
-            
-        if current_weight + last_item['weight'] > maximum_weight:
-            break        
-    
-    return result
+    number_of_items = len(items)
+
+    dp_matrix = [[float("inf")] * (number_of_items+1) for _ in range(maximum_weight+1)]
+
+
+    # initialize first column
+    for row_index, _ in enumerate(dp_matrix):
+        dp_matrix[row_index][0] = 0
+
+    for row in range(1, len(dp_matrix)):
+        for col in range(1, len(dp_matrix[0])):
+
+            # initialize first row
+            dp_matrix[0][col] = 0
+
+            item = items[col - 1]
+
+            if item["weight"] <= row:
+                take = item["value"] + dp_matrix[row - item["weight"]][col - 1]
+
+                skip = dp_matrix[row][col - 1]
+
+                dp_matrix[row][col] = max(take, skip)
+            else:
+                dp_matrix[row][col] = dp_matrix[row][col - 1]
+                
+    return dp_matrix[maximum_weight][number_of_items]
