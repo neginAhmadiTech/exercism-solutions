@@ -57,3 +57,15 @@ define the state and the recurrence. This is the heart of the solution.
 decide whether to evaluate that recurrence top-down (recursion + memoization) or bottom-up (iteration).
 
 Once you can derive the recurrence, switching between top-down and bottom-up often becomes a matter of changing how you compute the same formula rather than inventing a new algorithm. This is a powerful way to think about DP problems because it separates the mathematical idea from the coding technique.
+
+---
+
+                    Relationship
+                         │
+              ┌──────────┴──────────┐
+              ↓                     ↓
+        Recursive                Iterative
+              │                     │
+        Memoization             Tabulation
+              │                     │
+           Top-down              Bottom-up
