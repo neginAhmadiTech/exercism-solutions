@@ -1,7 +1,25 @@
-EAST = 2
 NORTH = 1
-WEST = 4
+EAST = 2
 SOUTH = 3
+WEST = 4
+DIRECTION_MOVEMENT = {
+    NORTH: (0, 1),
+    EAST: (1, 0),
+    SOUTH: (0, -1),
+    WEST: (-1, 0),
+}
+RIGHT = {
+    NORTH: EAST,
+    EAST: SOUTH,
+    SOUTH: WEST,
+    WEST: NORTH,
+}
+LEFT = {
+    NORTH: WEST,
+    WEST: SOUTH,
+    SOUTH: EAST,
+    EAST: NORTH,
+}
 
 
 class Robot:
@@ -9,34 +27,11 @@ class Robot:
         self.direction = direction
         self.coordinates = (x_pos, y_pos)
 
-    def handle_right(self):
-        if self.direction == 4:
-            self.direction = 1
-            return
-
-        self.direction += 1
-
-    def handle_left(self):
-        if self.direction == 1:
-            self.direction = 4
-            return
-
-        self.direction -= 1
-
     def handle_advance(self):
-        self.coordinates = list(self.coordinates)
 
-        match (self.direction):
-            case 1:
-                self.coordinates[1] += 1
-            case 2:
-                self.coordinates[0] += 1
-            case 3:
-                self.coordinates[1] -= 1
-            case 4:
-                self.coordinates[0] -= 1
-
-        self.coordinates = tuple(self.coordinates)
+        x, y = self.coordinates
+        x_movement, y_movement = DIRECTION_MOVEMENT[self.direction]
+        self.coordinates = (x + x_movement, y + y_movement)
 
     def move(self, movements):
 
@@ -44,8 +39,8 @@ class Robot:
 
             match (movement):
                 case "L":
-                    self.handle_left()
+                    self.direction = LEFT[self.direction]
                 case "R":
-                    self.handle_right()
+                    self.direction = RIGHT[self.direction]
                 case "A":
                     self.handle_advance()
