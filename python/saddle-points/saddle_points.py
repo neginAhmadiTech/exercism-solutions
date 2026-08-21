@@ -17,15 +17,14 @@ def saddle_points(matrix):
     result = []
     for row_index, row in enumerate(matrix):
         row_max = max(row)
-        row_max_list = []
 
-        row_max_list = [index for index, value in enumerate(row) if value == row_max]
+        max_indices = [index for index, value in enumerate(row) if value == row_max]
 
-        for row_max_index in row_max_list:
-            col_list = [sub[row_max_index] for sub in matrix]
-            col_min = min(col_list)
+        for column_index in max_indices:
+            column = [row[column_index] for row in matrix]
+            column_min = min(column)
 
-            if row_max == col_min:
-                result.append({"row": row_index + 1, "column": row_max_index + 1})
+            if row_max == column_min:
+                result.append({"row": row_index + 1, "column": column_index + 1})
 
     return result
