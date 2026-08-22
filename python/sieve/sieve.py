@@ -1,18 +1,18 @@
 def primes(limit):
     result = []
 
-    if limit == 0:
-        return []
-
-    numbers = set(range(2, limit + 1))
+    numbers = list(range(2, limit + 1))
 
     while numbers:
-        number, *numbers = sorted(numbers)
-        result.append(number)
-        multiplier_list = [
-            multiplier for multiplier in numbers if multiplier % number == 0
-        ]
 
-        numbers = set(numbers) - set(multiplier_list)
+        number, *numbers = numbers
+
+        result.append(number)
+
+        multiplier_list = (
+            list(range(number * number, max(numbers) + 1, number)) if numbers else []
+        )
+
+        numbers = [item for item in numbers if item not in multiplier_list]
 
     return result
