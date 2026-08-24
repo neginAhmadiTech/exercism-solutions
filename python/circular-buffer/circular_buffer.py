@@ -6,7 +6,7 @@ class BufferFullException(BufferError):
     """
 
     def __init__(self, message):
-        super(BufferError, self).__init__(message)
+        super().__init__(message)
 
 
 class BufferEmptyException(BufferError):
@@ -17,37 +17,50 @@ class BufferEmptyException(BufferError):
     """
 
     def __init__(self, message):
-        super(BufferError, self).__init__(message)
+        super().__init__(message)
 
 
 class CircularBuffer:
     def __init__(self, capacity):
         self.capacity = capacity
-        self.buffer = []
+        self.buffer = [None] * capacity
 
-    @property
-    def _buffer_filled(self):
-        return [item for item in self.buffer if item != ""]
+        self.read_index = 0
+        self.write_index = 0
+        self.size = 0
 
     def read(self):
-        if len(self._buffer_filled) == 0:
+        if self.size == 0:
             raise BufferEmptyException("Circular buffer is empty")
 
-        return self.buffer.pop(0)
+        read_item = self.buffer[self.read_index]
+        self.buffer[self.read_index] = None
+        self.read_index = (self.read_index + 1) % self.capacity
+        self.size -= 1
+
+        return read_item
 
     def write(self, data):
 
-        if len(self._buffer_filled) == self.capacity:
+        if self.size == self.capacity:
             raise BufferFullException("Circular buffer is full")
 
-        self.buffer.append(data)
+        self.buffer[self.write_index] = data
+        self.write_index = (self.write_index + 1) % self.capacity
+        self.size += 1
 
     def overwrite(self, data):
 
-        if len(self._buffer_filled) == self.capacity:
-            self.buffer.pop(0)
+        if self.size < self.capacity:
+            self.write(data)
+            return
 
-        self.buffer.append(data)
+        self.buffer[self.write_index] = data
+        self.write_index = (self.write_index + 1) % self.capacity
+        self.read_index = (self.read_index + 1) % self.capacity
 
     def clear(self):
-        self.buffer = []
+        self.buffer = [None] * self.capacity
+        self.read_index = 0
+        self.write_index = 0
+        self.size = 0
