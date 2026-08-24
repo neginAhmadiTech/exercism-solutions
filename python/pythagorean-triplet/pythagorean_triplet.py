@@ -1,23 +1,16 @@
-def first_rule(number, candidates):
-    return number == sum(candidates)
-
-
-def second_rule(first_number, second_number, third_number):
-    return first_number**2 + second_number**2 == third_number**2
+import math
 
 
 def triplets_with_sum(number):
-    result = []
-
-    for first_number in range(1, number + 1):
-        for second_number in range(first_number + 1, number + 1):
-
-            for third_number in range(second_number + 1, number + 1):
-
-                if first_rule(
-                    number, [first_number, second_number, third_number]
-                ) and second_rule(first_number, second_number, third_number):
-
-                    result.append([first_number, second_number, third_number])
-
-    return result
+    triplets = []
+    for third in range(int(number / 2) - 1, int((math.sqrt(2) - 1) * number), -1):
+        formula = math.sqrt(third**2 - number**2 + 2 * number * third)
+        if formula == int(formula):
+            triplets.append(
+                [
+                    int((number - third - formula) / 2),
+                    int((number - third + formula) / 2),
+                    third,
+                ]
+            )
+    return triplets
