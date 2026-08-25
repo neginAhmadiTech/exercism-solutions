@@ -18,7 +18,9 @@ class RestAPI:
                 for user in self.database["users"]:
 
                     if user["name"] == name:
-                        user["balance"] = sum(user["owed_by"]) - sum(user["owes"])
+                        user["balance"] = sum(user["owed_by"].values()) - sum(
+                            user["owes"].values()
+                        )
                         result["users"].append(user)
 
             result["users"] = sorted(result["users"], key=lambda user: user["name"])
