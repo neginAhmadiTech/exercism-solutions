@@ -28,24 +28,21 @@ def update_scores(teams, first_team, second_team, match_result):
 
 def sort_teams(teams):
 
-    sorted_teams = sorted(teams.items(), key=lambda x: (-x[1]["P"], x[0]))
-
-    return sorted_teams
+    return sorted(teams.items(), key=lambda x: (-x[1]["P"], x[0]))
 
 
-def print_board(teams):
+def build_board(teams):
     result = ["Team                           | MP |  W |  D |  L |  P"]
 
-    for team in teams:
+    for team_name, scores in teams:
 
-        team_scores = team[1]
         formatted = (
-            f"{team[0]:<30} | "
-            f"{team_scores['MP']:2} | "
-            f"{team_scores['W']:2} | "
-            f"{team_scores['D']:2} | "
-            f"{team_scores['L']:2} | "
-            f"{team_scores['P']:2}"
+            f"{team_name:<30} | "
+            f"{scores["MP"]:2} | "
+            f"{scores["W"]:2} | "
+            f"{scores["D"]:2} | "
+            f"{scores["L"]:2} | "
+            f"{scores["P"]:2}"
         )
         result.append(formatted)
 
@@ -57,14 +54,14 @@ def tally(rows):
     teams = {}
 
     for row in rows:
-        row = row.split(";")
-        first_team, second_team, match_result = row
+        splitted_row = row.split(";")
+        first_team, second_team, match_result = splitted_row
 
         teams.setdefault(first_team, {"MP": 0, "W": 0, "D": 0, "L": 0, "P": 0})
         teams.setdefault(second_team, {"MP": 0, "W": 0, "D": 0, "L": 0, "P": 0})
 
-        teams = update_scores(teams, first_team, second_team, match_result)
+        update_scores(teams, first_team, second_team, match_result)
 
     teams = sort_teams(teams)
 
-    return print_board(teams)
+    return build_board(teams)
