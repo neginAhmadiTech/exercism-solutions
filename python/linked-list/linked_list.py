@@ -39,7 +39,7 @@ class LinkedList:
 
     def pop(self):
 
-        if self.head is None or self.tail is None or self.length == 0:
+        if self.length == 0:
             raise IndexError("List is empty")
 
         value = self.tail.value
@@ -74,7 +74,7 @@ class LinkedList:
 
     def shift(self):
 
-        if self.head is None or self.tail is None or self.length == 0:
+        if self.length == 0:
             raise IndexError("List is empty")
 
         value = self.head.value
@@ -94,7 +94,7 @@ class LinkedList:
         return value
 
     def delete(self, node):
-        if self.head is None or self.tail is None or self.length == 0:
+        if self.length == 0:
             raise ValueError("Value not found")
 
         if self.length == 1 and node == self.head.value:
