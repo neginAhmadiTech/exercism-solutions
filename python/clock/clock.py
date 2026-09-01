@@ -1,15 +1,22 @@
 class Clock:
-    def __init__(self, hour, minute):
-        self.hour = hour
-        self.minute = minute
+    MINUTES_PER_DAY = 24 * 60
 
-        self.total_minutes = ((self.hour * 60) + self.minute) % 1440
+    def __init__(self, hour, minute):
+        self.total_minutes = ((hour * 60) + minute) % self.MINUTES_PER_DAY
+
+    @property
+    def hour(self):
+        return self.total_minutes // 60
+
+    @property
+    def minute(self):
+        return self.total_minutes % 60
 
     def __repr__(self):
-        return f"Clock({"0" if self.hour==24 else f"{self.hour}"}, {self.minute})"
+        return f"Clock({self.hour%24}, {self.minute})"
 
     def __str__(self):
-        return f"{self.total_minutes//60:02d}:{self.total_minutes%60:02d}"
+        return f"{self.hour:02d}:{self.minute%60:02d}"
 
     def __eq__(self, other):
 
@@ -17,11 +24,11 @@ class Clock:
 
     def __add__(self, minutes):
 
-        self.total_minutes += minutes
+        total_minutes_updated = self.total_minutes + minutes
 
-        return Clock(self.total_minutes // 60, self.total_minutes % 60)
+        return Clock(total_minutes_updated // 60, total_minutes_updated % 60)
 
     def __sub__(self, minutes):
-        self.total_minutes -= minutes
+        total_minutes_updated = self.total_minutes - minutes
 
-        return Clock(self.total_minutes // 60, self.total_minutes % 60)
+        return Clock(total_minutes_updated // 60, total_minutes_updated % 60)
