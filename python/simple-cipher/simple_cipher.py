@@ -9,6 +9,8 @@ class Cipher:
         else:
             self.key = self._generate_key
 
+        self.key_movements = self._key_movements()
+
     @property
     def _generate_key(self):
         return "".join(random.sample(string.ascii_lowercase, 10))
@@ -29,7 +31,7 @@ class Cipher:
 
         for index, letter in enumerate(text):
             movement = 0
-            key_movements = self._key_movements()
+            key_movements = self.key_movements
             movement = index % len(self.key)
             result += chr(
                 (ord(letter) - ord("a") + key_movements[movement]) % 26 + ord("a")
@@ -42,7 +44,7 @@ class Cipher:
 
         for index, letter in enumerate(text):
             movement = 0
-            key_movements = self._key_movements()
+            key_movements = self.key_movements
             movement = index % len(self.key)
             result += chr(
                 (ord(letter) - ord("a") - key_movements[movement]) % 26 + ord("a")
