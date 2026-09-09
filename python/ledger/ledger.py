@@ -89,23 +89,15 @@ def generate_entry_change(entry, currency, locale):
 
 
 def find_next_entry_in_order(entries):
-    min_entry_index = -1
-    for index, entry in enumerate(entries):
 
-        if min_entry_index < 0:
-            min_entry_index = index
-            continue
-
-        min_entry = entries[min_entry_index]
-
-        if entry.date < min_entry.date:
-            min_entry_index = index
-        elif entry.change < min_entry.change:
-            min_entry_index = index
-        elif entry.description < min_entry.description:
-            min_entry_index = index
-
-    return entries.pop(min_entry_index)
+    entries.sort(
+        key=lambda entry: (
+            entry.date,
+            entry.change,
+            entry.description,
+        )
+    )
+    return entries.pop(0)
 
 
 def generate_table(header_data, entries, locale, currency):
