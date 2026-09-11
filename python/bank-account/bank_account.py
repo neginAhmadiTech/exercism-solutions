@@ -1,15 +1,10 @@
 class BankAccount:
     def __init__(self):
         self.balance = 0
-        self.opened = False
-        self.closed = False
+        self.is_opened = False
 
-    def check_account_closed(self):
-        if self.closed and not self.opened:
-            raise ValueError("account not open")
-
-    def check_account_opened(self):
-        if not self.opened:
+    def check_account_open(self):
+        if not self.is_opened:
             raise ValueError("account not open")
 
     def check_negative_amount(self, amount):
@@ -18,43 +13,37 @@ class BankAccount:
 
     def get_balance(self):
 
-        self.check_account_closed()
+        self.check_account_open()
 
         return self.balance
 
     def open(self):
-        # self.check_account_closed()
 
-        if self.opened:
+        if self.is_opened:
             raise ValueError("account already open")
 
-        self.opened = True
+        self.is_opened = True
         self.balance = 0
 
     def deposit(self, amount):
 
-        self.check_account_closed()
-        self.check_account_opened()
-
+        self.check_account_open()
         self.check_negative_amount(amount)
 
-        if self.opened and not self.closed:
-            self.balance += amount
+        self.balance += amount
 
     def withdraw(self, amount):
 
-        self.check_account_closed()
+        self.check_account_open()
+        self.check_negative_amount(amount)
 
         if amount > self.balance:
             raise ValueError("amount must be less than balance")
-
-        self.check_negative_amount(amount)
 
         self.balance -= amount
 
     def close(self):
 
-        self.check_account_opened()
+        self.check_account_open()
 
-        self.closed = True
-        self.opened = False
+        self.is_opened = False
