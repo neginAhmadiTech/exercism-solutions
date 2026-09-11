@@ -3,7 +3,6 @@ import math
 
 class ComplexNumber:
     def __init__(self, real, imaginary):
-        self.number = (real, imaginary)
         self.real = real
         self.imaginary = imaginary
 
@@ -11,7 +10,7 @@ class ComplexNumber:
         return other.real == self.real and other.imaginary == self.imaginary
 
     def __add__(self, other):
-        if isinstance(other, int):
+        if not isinstance(other, ComplexNumber):
             return ComplexNumber(other + self.real, self.imaginary)
 
         return ComplexNumber(other.real + self.real, other.imaginary + self.imaginary)
@@ -21,7 +20,7 @@ class ComplexNumber:
 
     def __mul__(self, other):
 
-        if isinstance(other, int):
+        if not isinstance(other, ComplexNumber):
             return ComplexNumber(other * self.real, other * self.imaginary)
 
         real_part = (self.real * other.real) - (self.imaginary * other.imaginary)
@@ -34,7 +33,7 @@ class ComplexNumber:
 
     def __sub__(self, other):
 
-        if isinstance(other, int):
+        if not isinstance(other, ComplexNumber):
             return ComplexNumber(self.real - other, self.imaginary)
 
         return ComplexNumber(self.real - other.real, self.imaginary - other.imaginary)
@@ -44,7 +43,7 @@ class ComplexNumber:
 
     def __truediv__(self, other):
 
-        if isinstance(other, int):
+        if not isinstance(other, ComplexNumber):
             return ComplexNumber(self.real / other, self.imaginary / other)
 
         real_part = (self.real * other.real + self.imaginary * other.imaginary) / (
@@ -58,12 +57,12 @@ class ComplexNumber:
 
     def __rtruediv__(self, other):
         return ComplexNumber(
-            other / (self.real + self.imaginary),
-            other / (self.real + self.imaginary) * (-1),
+            (other * self.real) / ((self.real**2) + (self.imaginary**2)),
+            (other * self.real) / ((self.real**2) + (self.imaginary**2)) * (-1),
         )
 
     def __abs__(self):
-        return int((self.real**2) + (self.imaginary**2)) ** (1 / 2)
+        return math.sqrt((self.real**2) + (self.imaginary**2))
 
     def conjugate(self):
         return ComplexNumber(self.real, self.imaginary * (-1))
