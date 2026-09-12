@@ -3,24 +3,23 @@ def tree_from_traversals(preorder, inorder):
     if len(preorder) != len(inorder):
         raise ValueError("traversals must have the same length")
 
-    if sorted(preorder) != sorted(inorder):
-        raise ValueError("traversals must have the same elements")
-
     if len(set(preorder)) != len(preorder) or len(set(inorder)) != len(inorder):
         raise ValueError("traversals must contain unique items")
 
-    if len(preorder) == len(inorder) == 0:
+    if sorted(preorder) != sorted(inorder):
+        raise ValueError("traversals must have the same elements")
+
+    if not preorder:
         return {}
 
     root = preorder[0]
+    root_index = inorder.index(root)
 
-    inorder_str = "".join(inorder)
-    splitted_inorder_str = inorder_str.split(root)
-    left_side_inorder = list(splitted_inorder_str[0])
-    right_side_inorder = list(splitted_inorder_str[1])
+    left_side_inorder = inorder[:root_index]
+    right_side_inorder = inorder[root_index + 1 :]
 
-    left_side_preorder = [node for node in preorder if node in left_side_inorder]
-    right_side_preorder = [node for node in preorder if node in right_side_inorder]
+    left_side_preorder = preorder[1 : root_index + 1]
+    right_side_preorder = preorder[root_index + 1 :]
 
     return {
         "v": root,
