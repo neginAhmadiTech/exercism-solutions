@@ -17,24 +17,14 @@ def can_chain(dominoes):
 
     def can_connect(used_dominoes, candidate):
 
-        domino_in_list = used_dominoes[-1]
+        last_domino = used_dominoes[-1]
         result = None
 
-        if domino_in_list[1] == candidate[0]:
+        if last_domino[1] == candidate[0]:
             result = (used_dominoes, candidate)
 
-        elif domino_in_list[1] == candidate[1]:
+        elif last_domino[1] == candidate[1]:
             result = (used_dominoes, invert_domino(candidate))
-
-        if len(used_dominoes) == 1 and result is None:
-
-            if domino_in_list[0] == candidate[0]:
-                used_dominoes[-1] = invert_domino(domino_in_list)
-                result = (used_dominoes, candidate)
-
-            elif domino_in_list[0] == candidate[1]:
-                used_dominoes[-1] = invert_domino(domino_in_list)
-                result = (used_dominoes, invert_domino(candidate))
 
         return result
 
