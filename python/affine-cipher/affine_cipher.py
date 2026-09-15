@@ -17,7 +17,7 @@ def encode(plain_text, a, b):
         if letter in [" ", ",", "."]:
             continue
 
-        if not letter.isalpha():
+        if not "a" <= letter <= "z":
             result += letter
             continue
 
@@ -32,13 +32,9 @@ def encode(plain_text, a, b):
 
 def find_a_inverse(a):
 
-    a_inverse = None
     for x in range(26):
         if (a * x) % 26 == 1:
-            a_inverse = x
-            break
-
-    return a_inverse
+            return x
 
 
 def decode(ciphered_text, a, b):
@@ -52,7 +48,7 @@ def decode(ciphered_text, a, b):
 
     for letter in ciphered_text:
 
-        if not letter.isalpha():
+        if not "a" <= letter <= "z":
             result += letter
             continue
 
