@@ -9,11 +9,9 @@ def can_chain(dominoes):
         return None
 
     def invert_domino(domino):
-        domino_list = list(domino)
+        first, second = domino
 
-        domino_list[0], domino_list[1] = domino_list[1], domino_list[0]
-
-        return tuple(domino_list)
+        return (second, first)
 
     def can_connect(used_dominoes, candidate):
 
