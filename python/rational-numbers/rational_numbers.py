@@ -1,10 +1,13 @@
+import math
+
+
 class Rational:
     def __init__(self, numer, denom):
-        self.numer = numer
-        self.denom = denom
+        gcd = math.gcd(numer, denom)
+        self.numer = numer // gcd
+        self.denom = denom // gcd
 
         self._normalize()
-        self._simplify()
 
     def _normalize(self):
         if self.numer < 0:
@@ -12,37 +15,6 @@ class Rational:
             self.denom = (-1) * self.denom
         elif self.numer == 0:
             self.denom = 1
-
-    def _simplify(self):
-        numer_divisors = self._find_divisors(abs(self.numer))
-        denom_divisors = self._find_divisors(abs(self.denom))
-        gcd = self._find_gcd(numer_divisors, denom_divisors)
-
-        self.numer = self.numer // gcd
-        self.denom = self.denom // gcd
-
-    @staticmethod
-    def _find_gcd(first, second):
-        common_divisors = first & second
-
-        if not common_divisors:
-            return 1
-
-        return max(common_divisors)
-
-    @staticmethod
-    def _find_divisors(number):
-
-        divisors = set()
-
-        if number == 0:
-            return divisors
-
-        for candidate in range(1, number + 1):
-            if number % candidate == 0:
-                divisors.add(candidate)
-
-        return divisors
 
     def __eq__(self, other):
         return self.numer == other.numer and self.denom == other.denom
