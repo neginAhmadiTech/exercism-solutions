@@ -17,24 +17,23 @@ class BinarySearchTree:
 
         if data <= root.data:
             if root.left is None:
-                root.left = TreeNode(data, None, None)
+                root.left = TreeNode(data)
             else:
                 self._insert_data(root.left, data)
         else:
             if root.right is None:
-                root.right = TreeNode(data, None, None)
+                root.right = TreeNode(data)
             else:
                 self._insert_data(root.right, data)
 
         return root
 
     def data(self):
-        tree_data = self.tree_data.copy()
 
         if self.tree is None:
-            self.tree = TreeNode(tree_data.pop(0), None, None)
+            self.tree = TreeNode(self.tree_data[0])
 
-        for data in tree_data:
+        for data in self.tree_data[1:]:
             self.tree = self._insert_data(self.tree, data)
 
         return self.tree
