@@ -1,7 +1,10 @@
+from copy import deepcopy
+
+
 class Zipper:
     def __init__(self, tree):
-        self.tree = tree
-        self.focus = tree
+        self.tree = deepcopy(tree)
+        self.focus = self.tree
         self.path = []
 
     @staticmethod
@@ -17,13 +20,10 @@ class Zipper:
 
     def left(self):
 
-        if self.focus["left"] is None:
-            return None
-
-        self.path.append(self.focus)
-        self.focus = self.focus["left"]
-
-        return self
+        if self.focus["left"] is not None:
+            self.path.append(self.focus)
+            self.focus = self.focus["left"]
+            return self
 
     def set_left(self, left):
 
@@ -32,12 +32,10 @@ class Zipper:
 
     def right(self):
 
-        if self.focus["right"] is None:
-            return None
-
-        self.path.append(self.focus)
-        self.focus = self.focus["right"]
-        return self
+        if self.focus["right"] is not None:
+            self.path.append(self.focus)
+            self.focus = self.focus["right"]
+            return self
 
     def set_right(self, right):
 
@@ -53,5 +51,4 @@ class Zipper:
         return self
 
     def to_tree(self):
-        self.focus = None
         return self.tree
