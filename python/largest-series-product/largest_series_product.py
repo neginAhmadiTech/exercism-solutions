@@ -9,14 +9,14 @@ def largest_product(series, size):
     if not series.isdigit():
         raise ValueError("digits input must only contain digits")
 
-    products = []
+    max_product = 0
     for index in range(0, len(series) - size + 1):
-        window = series[index : index + size]
+        window = [int(digit) for digit in series[index : index + size]]
 
         product = 1
         for digit in window:
-            product *= int(digit)
+            product *= digit
 
-        products.append(product)
+        max_product = max(max_product, product)
 
-    return max(products)
+    return max_product
